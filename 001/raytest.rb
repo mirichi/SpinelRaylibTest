@@ -26,7 +26,7 @@ class Bullet
     if @active
       sx = @x - cx
       sy = @y - cy
-      RAY.DrawRectangle(sx.to_i - 2, sy.to_i - 2, 4, 4, RAY::RED)
+      RAY.SpDrawRectangle(sx.to_i - 2, sy.to_i - 2, 4, 4, RAY::RED)
     end
   end
 end
@@ -114,7 +114,7 @@ class Item
 
       sx = @x - cx
       sy = @y - cy
-      RAY.DrawRectangle(sx.to_i - 5, sy.to_i - 5, 10, 10, RAY::YELLOW)
+      RAY.SpDrawRectangle(sx.to_i - 5, sy.to_i - 5, 10, 10, RAY::YELLOW)
     end
   end
 end
@@ -190,7 +190,7 @@ class Particle
       sy = @y - cy
       # 寿命（life）が減るにつれて四角形を小さく描画する
       size = (@life.to_f / @max_life) * 10.0
-      RAY.DrawRectangle(sx.to_i - size.to_i / 2, sy.to_i - size.to_i / 2, size.to_i, size.to_i, RAY::ORANGE)
+      RAY.SpDrawRectangle(sx.to_i - size.to_i / 2, sy.to_i - size.to_i / 2, size.to_i, size.to_i, RAY::ORANGE)
     end
   end
 end
@@ -296,16 +296,16 @@ class Enemy
       
       if @max_hp > 1
         # 硬い敵は赤くて大きい
-        RAY.DrawRectangle(sx.to_i - size / 2, sy.to_i - size / 2, size, size, RAY::RED)
+        RAY.SpDrawRectangle(sx.to_i - size / 2, sy.to_i - size / 2, size, size, RAY::RED)
         
         # HPバーの描画
         bar_width = size
         hp_ratio = @hp.to_f / @max_hp
-        RAY.DrawRectangle(sx.to_i - size / 2, sy.to_i - size / 2 - 10, bar_width, 5, RAY::GRAY)
-        RAY.DrawRectangle(sx.to_i - size / 2, sy.to_i - size / 2 - 10, (bar_width * hp_ratio).to_i, 5, RAY::GREEN)
+        RAY.SpDrawRectangle(sx.to_i - size / 2, sy.to_i - size / 2 - 10, bar_width, 5, RAY::GRAY)
+        RAY.SpDrawRectangle(sx.to_i - size / 2, sy.to_i - size / 2 - 10, (bar_width * hp_ratio).to_i, 5, RAY::GREEN)
       else
         # 通常の敵
-        RAY.DrawRectangle(sx.to_i - size / 2, sy.to_i - size / 2, size, size, RAY::BLUE)
+        RAY.SpDrawRectangle(sx.to_i - size / 2, sy.to_i - size / 2, size, size, RAY::BLUE)
       end
     end
   end
@@ -422,8 +422,8 @@ class Player
       vy2 = sy + @radius * Math.sin(angle2)
 
       RAY.SpDrawTriangle(sx.to_f, sy.to_f, vx2.to_f, vy2.to_f, vx1.to_f, vy1.to_f, RAY::GREEN)
-      RAY.DrawLine(vx1.to_i, vy1.to_i, vx2.to_i, vy2.to_i, RAY::WHITE)
-      RAY.DrawRectangle(vx1.to_i - 2, vy1.to_i - 2, 4, 4, RAY::WHITE)
+      RAY.SpDrawLine(vx1.to_i, vy1.to_i, vx2.to_i, vy2.to_i, RAY::WHITE)
+      RAY.SpDrawRectangle(vx1.to_i - 2, vy1.to_i - 2, 4, 4, RAY::WHITE)
     end
   end
 end
@@ -542,7 +542,7 @@ class Game
     end
 
     RAY.BeginDrawing()
-    RAY.ClearBackground(RAY::BLACK)
+    RAY.SpClearBackground(RAY::BLACK)
 
     # カメラ座標（プレイヤーを画面中央にするためのオフセット）
     cx = @player.x - 1280 / 2.0
@@ -555,13 +555,13 @@ class Game
 
     x = offset_x
     while x < 1280
-      RAY.DrawLine(x, 0, x, 720, RAY::DARKGRAY)
+      RAY.SpDrawLine(x, 0, x, 720, RAY::DARKGRAY)
       x += grid_size
     end
 
     y = offset_y
     while y < 720
-      RAY.DrawLine(0, y, 1280, y, RAY::DARKGRAY)
+      RAY.SpDrawLine(0, y, 1280, y, RAY::DARKGRAY)
       y += grid_size
     end
 
@@ -572,13 +572,13 @@ class Game
     @player.draw(cx, cy)
 
     score_str = "SCORE: " + @player.score.to_s
-    RAY.DrawText(score_str, 20, 20, 30, RAY::WHITE)
+    RAY.SpDrawText(score_str, 20, 20, 30, RAY::WHITE)
 
     if @game_state == 1
       bg_color = RAY::Color.value(0, 0, 0, 150)
-      RAY.DrawRectangle(0, 0, 1280, 720, bg_color)
+      RAY.SpDrawRectangle(0, 0, 1280, 720, bg_color)
       
-      RAY.DrawText("--- SKILL MENU ---", 450, 150, 40, RAY::WHITE)
+      RAY.SpDrawText("--- SKILL MENU ---", 450, 150, 40, RAY::WHITE)
       
       # マウスホバー位置の取得（ハイライト用）
       mx = RAY.SpGetMouseX()
@@ -589,10 +589,10 @@ class Game
       hover4 = mx >= 380 && mx <= 1180 && my >= 395 && my <= 440
 
       # ホバー中の項目をハイライト表示
-      RAY.DrawRectangle(380, 245, 800, 45, RAY::DARKGRAY) if hover1
-      RAY.DrawRectangle(380, 295, 800, 45, RAY::DARKGRAY) if hover2
-      RAY.DrawRectangle(380, 345, 800, 45, RAY::DARKGRAY) if hover3
-      RAY.DrawRectangle(380, 395, 800, 45, RAY::DARKGRAY) if hover4
+      RAY.SpDrawRectangle(380, 245, 800, 45, RAY::DARKGRAY) if hover1
+      RAY.SpDrawRectangle(380, 295, 800, 45, RAY::DARKGRAY) if hover2
+      RAY.SpDrawRectangle(380, 345, 800, 45, RAY::DARKGRAY) if hover3
+      RAY.SpDrawRectangle(380, 395, 800, 45, RAY::DARKGRAY) if hover4
 
       shape_cost = (@player.sides - 2) * 100
       t1 = "[1] Upgrade Shape  (Cost: " + shape_cost.to_s + ") -> Sides: " + (@player.sides + 1).to_s
@@ -600,12 +600,12 @@ class Game
       t3 = "[3] Fire Rate Up   (Cost: 50)"
       t4 = "[4] Magnet Radius  (Cost: 50) -> Range: " + (@player.magnet_radius + 50.0).to_s
       
-      RAY.DrawText(t1, 400, 250, 30, @player.score >= shape_cost ? RAY::WHITE : RAY::GRAY)
-      RAY.DrawText(t2, 400, 300, 30, @player.score >= 50 ? RAY::WHITE : RAY::GRAY)
-      RAY.DrawText(t3, 400, 350, 30, (@player.score >= 50 && @player.fire_rate > 2) ? RAY::WHITE : RAY::GRAY)
-      RAY.DrawText(t4, 400, 400, 30, @player.score >= 50 ? RAY::WHITE : RAY::GRAY)
+      RAY.SpDrawText(t1, 400, 250, 30, @player.score >= shape_cost ? RAY::WHITE : RAY::GRAY)
+      RAY.SpDrawText(t2, 400, 300, 30, @player.score >= 50 ? RAY::WHITE : RAY::GRAY)
+      RAY.SpDrawText(t3, 400, 350, 30, (@player.score >= 50 && @player.fire_rate > 2) ? RAY::WHITE : RAY::GRAY)
+      RAY.SpDrawText(t4, 400, 400, 30, @player.score >= 50 ? RAY::WHITE : RAY::GRAY)
       
-      RAY.DrawText("Right Click or ESC to Resume", 400, 500, 20, RAY::GRAY)
+      RAY.SpDrawText("Right Click or ESC to Resume", 400, 500, 20, RAY::GRAY)
     end
 
     RAY.EndDrawing()

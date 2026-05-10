@@ -18,10 +18,10 @@ module RAY
   # Drawing
   ffi_func :BeginDrawing,         [], :void
   ffi_func :EndDrawing,           [], :void
-  ffi_func :ClearBackground,      [:uint32], :void
+  ffi_func :SpClearBackground,    [:uint32], :void
 
   # Text
-  ffi_func :DrawText,             [:str, :int, :int, :int, :uint32], :void
+  ffi_func :SpDrawText,           [:str, :int, :int, :int, :uint32], :void
 
   # Textures(sp_raylib)
   ffi_func :SpLoadTexture,        [:str], :int
@@ -58,9 +58,9 @@ module RAY
   ffi_func :SetTargetFPS,         [:int], :void
   ffi_func :SetExitKey,           [:int], :void
   ffi_func :SpSleep,              [], :void
-  ffi_func :DrawRectangle,        [:int, :int, :int, :int, :uint32], :void
-  ffi_func :DrawRectangleLines,   [:int, :int, :int, :int, :uint32], :void
-  ffi_func :DrawLine,             [:int, :int, :int, :int, :uint32], :void
+  ffi_func :SpDrawRectangle,      [:int, :int, :int, :int, :uint32], :void
+  ffi_func :SpDrawRectangleLines, [:int, :int, :int, :int, :uint32], :void
+  ffi_func :SpDrawLine,           [:int, :int, :int, :int, :uint32], :void
 
   # Constants
   ffi_const :KEY_LEFT, 263
